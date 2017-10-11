@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        AngularJs $http.post() Service Response Example
+    </title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('postserviceApp', []);
+        app.controller('postserviceCtrl', function ($scope, $http) {
+            $scope.name = null;
+            $scope.address = null;
+            $scope.statusval = null;
+            $scope.postdata = function (name, address) {
+                var data = {
+                    name: name,
+                    address: address
+                };
+                //Call the services, must start with '/'
+                $http.post('/users/' + name, JSON.stringify(data)).then(function (response) {
+                    if (response.data)
+                        $scope.msg = "Post Data Submitted Successfully!";
+                    $scope.statusval = response.status;
+                }, function (response) {
+                    $scope.msg = "Service not Exists";
+                    $scope.statusval = response.status;
+                });
+            };
+        });
+
+    </script>
+</head>
+
+<body>
+    <h1>AngularJs $http.post() Service Response Example </h1>
+    <div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+        <div>
+            Username :
+            <input ng-model="name" />
+            <br/> Address :
+            <input ng-model="address" />
+            <br/>
+            <input type="button" value="Send" ng-click="postdata(name, address)" />
+            <br/>
+            <br/>
+        </div>
+        <p>Output Message : {{msg}}</p>
+        <p>StatusCode: {{statusval}}</p>
+    </div>
+</body>
+
+</html>
