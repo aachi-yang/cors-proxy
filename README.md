@@ -6,13 +6,13 @@ This document is based on: [tiangolo/uwsgi-nginx-flask](https://hub.docker.com/r
 
 Also, refer to this one: [Nginx configuration for CORS-enabled HTTPS proxy with origin white-list defined by a simple regex](https://gist.github.com/pauloricardomg/7084524)
 
-## Prerequisite
+## Container
 
-- VirtualBox
 - debian:stretch
 - Nginx
 - Python3 (with python-extras)
 - uWSGI
+- app (Flask sample app)
 
 ## Files
 
@@ -47,7 +47,7 @@ Also, refer to this one: [Nginx configuration for CORS-enabled HTTPS proxy with 
 In host command windows:
 
 ```bash
-docker run -d --name cors cors-proxy
+docker run -d --name cors-proxy cors-proxy
 ```
 
 Browse link "localhost" or "localhost:8080", it will show:
@@ -66,26 +66,25 @@ docker logs -f cors
 In addition, it can run the bash of container to do what you want, like install additional packages, etc.
 
 ```bash
-docker exec -i -t cors /bin/bash
+docker exec -i -t cors-proxy /bin/bash
 ```
 
->
-> root@c19867aff7dc:/app# ls
->__pycache__  main.py  static  uwsgi.ini
->root@c19867aff7dc:/app#
->
-
+```bash
+root@c19867aff7dc:/app# ls
+__pycache__  main.py  static  uwsgi.ini
+root@c19867aff7dc:/app#
+```
 
 # Reference
 
 ## Run Docker Image
 
 ```bash
-docker run -d --name cors cors-proxy
+docker run -d --name cors-proxy cors-proxy
 
 or 
 # redirect aceess from localhost:8080 to container:80
-docker run -d --name cors -p 8080:80 cors-proxy
+docker run -d --name cors-proxy -p 8080:80 cors-proxy
 
 ```
 
@@ -103,7 +102,7 @@ docker stop cors
 
 ```bash
 # exec bash in container
-sudo docker exec -i -t cors /bin/bash
+sudo docker exec -i -t cors-proxy /bin/bash
 
 ```
 ### Display logs
